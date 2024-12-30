@@ -70,11 +70,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           POLICY_AUTH_TOKEN: ${{secrets.VB_API_KEY_STAGE}}
     container:
-      image: node:18-alpine
+      image: node:23-alpine3.20
       options: --cap-add=NET_ADMIN
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [23.x]
     steps:
     - env: 
         SCAN_ID: ${{ needs.create_scan_in_IR_Portal.outputs.scan_id }}
@@ -89,6 +89,10 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install
+    - name: Set up pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 9.15.2
+    - run: pnpm install
 
         
